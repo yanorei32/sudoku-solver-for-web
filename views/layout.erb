@@ -1,0 +1,87 @@
+<!DOCTYPE HTML>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<title>Sudoku Solver for Web</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+		<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+		<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+		<!-- IE9未満対策 -->
+		<!--[if lt IE 9]>
+			<script src="//oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+			<script src="//oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+		<![endif]-->
+		<% if @autoreload == true %>
+			<script>
+				window.onload = function(){
+					setTimeout("window.location.reload()",5000);
+				}
+			</script>
+		<% end %>
+		<style>
+			html,body {
+				height : 100%;
+			}
+			body {
+				background-color : #f0f0ff;
+			}
+			.main-content {
+				padding-bottom : 20px;
+			}
+			.navbar {
+				margin-bottom : 0px;
+			}
+			.footer {
+				background-color: white;
+				height : 60px;
+				overflow : hidden;
+			}
+			.footer-text {
+				margin-top : 20px;
+				white-space : nowrap;
+			}
+			.main-content-wrap {
+				min-height : 100%;
+				height : auto;
+				margin : 0 auto -60px;
+				padding : 0 0 80px;
+			}
+		</style>
+		</head>
+	<body>
+		<div class="main-content-wrap">
+			<nav class="navbar navbar-default">
+				<div class="container">
+					<div class="navbar-header">
+						<!-- ブランド名 ロゴ名の表示 -->
+						<a class="navbar-brand" href="/">Sudoku Solver for Web</a>
+						<!-- トグルボタンの設置 -->
+						<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#nav-content">
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<div id="nav-content" class="collapse navbar-collapse">
+						<!-- リンクのリストメニューリスト -->
+						<ul class="nav navbar-nav">
+							<li>
+								<a href="#">
+									<span class="glyphicon glyphicon-check"></span>&nbsp;Solve!
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+			<%= yield %>
+		</div>
+		<footer class="footer">
+			<div class="container">
+				<p class="text-muted footer-text">Copyright &copy; 2016 Yanorei32 All rights reserved.</p>
+			</div>
+		</footer>
+	</body>
+</html>

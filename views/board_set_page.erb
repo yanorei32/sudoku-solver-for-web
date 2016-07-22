@@ -1,0 +1,354 @@
+<style>
+	.cell {
+		background-color:white;
+		border:black solid 1px;
+	}
+	.cell_b_t {
+		border-top : black solid 2px;
+	}
+	.cell_b_r {
+		border-right : black solid 2px;
+	}
+	.cell_b_l {
+		border-left : black solid 2px;
+	}
+	.cell_b_b {
+		border-bottom : black solid 2px;
+	}
+	.cell_textbox{
+		width : 100%;
+		height:100%;
+		font-size : 1em;
+		text-align : center;
+	}
+</style>
+<script>
+	window.onload = function(){
+		table_resize();
+	}
+	window.onresize = function(){
+		table_resize();
+	}
+	function table_resize(){
+		var table_box_width = document.getElementById("table_box").offsetWidth;
+		var client_min_px = Math.min(document.documentElement.clientHeight-50,document.documentElement.clientWidth);
+		var table_width = Math.min(table_box_width,client_min_px) ;
+		var cells = document.getElementsByClassName("cell");
+		for(var i = 0;i < cells.length;i++){
+			cells[i].width = ((table_width - (9+1 + 3+1)) / 9) + "px";
+			cells[i].height = ((table_width - (9+1 + 3+1)) / 9) + "px";
+		}
+		var cell_textboxes = document.getElementsByClassName("cell_textbox");
+		for(var i = 0;i < cell_textboxes.length;i++){
+			cell_textboxes[i].style.fontSize = (table_width / 9 / 2 * 0.9) + "pt";
+		}
+	}
+	function input_valid(obj){
+		if (window.event) {
+			var c = window.event.keyCode;
+			if(obj.value.length == 0){
+				if(49<=c&&c<=57 || 97<=c&&c<=105){
+					return;
+				}
+			}
+			if ( c==37 || c==39 || c==8 || c==45 || c==46 || c==36 || c==35 ) return;
+		}
+		var v = obj.value;
+		v = v.replace(/[^1-9]/g,"");
+		if(v.length >= 1) v = v[0];
+		obj.value = v;
+	}
+	function cell_data_submit(){
+		var sudoku_data = "";
+		for(var i = 0;i < 9;i ++){
+			for(var j = 0;j < 9;j++){
+				var cel_val = document.getElementById("cell_" + (i+1) + (j+1)).value;
+				if(cel_val == ""){
+					sudoku_data += "0";
+				}else{
+					sudoku_data += cel_val;
+				}
+			}
+			if(i != 9 - 1) sudoku_data += ",";
+		}
+		document.getElementById("sudoku-data").value = sudoku_data;
+	}
+</script>
+<div class="container">
+	<div class="row">
+		<div class="col-md-6 col-md-push-3" id="table_box">
+			<table>
+				<tr>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_11" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_12" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_13" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_14" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_15" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_16" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_17" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_18" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_r">
+						<input type="text" id="cell_19" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_21" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_22" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_23" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_24" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_25" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_26" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_27" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_28" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_r">
+						<input type="text" id="cell_29" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_31" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_32" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_33" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_34" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_35" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_36" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_37" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_38" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_r">
+						<input type="text" id="cell_39" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_41" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_42" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_43" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_44" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_45" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_46" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_47" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_48" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_r">
+						<input type="text" id="cell_49" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_51" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_52" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_53" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_54" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_55" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_56" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_57" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_58" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_r">
+						<input type="text" id="cell_59" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_61" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_62" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_63" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_64" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_65" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_66" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_67" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_68" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_r">
+						<input type="text" id="cell_69" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_71" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_72" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_73" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_74" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_75" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_76" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_l">
+						<input type="text" id="cell_77" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t">
+						<input type="text" id="cell_78" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_t cell_b_r">
+						<input type="text" id="cell_79" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_81" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_82" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_83" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_84" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_85" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_86" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l">
+						<input type="text" id="cell_87" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell">
+						<input type="text" id="cell_88" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_r">
+						<input type="text" id="cell_89" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+				<tr>
+					<td class="cell cell_b_l cell_b_b">
+						<input type="text" id="cell_91" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_b">
+						<input type="text" id="cell_92" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_b">
+						<input type="text" id="cell_93" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l cell_b_b">
+						<input type="text" id="cell_94" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_b">
+						<input type="text" id="cell_95" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_b">
+						<input type="text" id="cell_96" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_l cell_b_b">
+						<input type="text" id="cell_97" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_b">
+						<input type="text" id="cell_98" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+					<td class="cell cell_b_r cell_b_b">
+						<input type="text" id="cell_99" class="cell_textbox" onkeyup="input_valid(this)">
+					</td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6 col-md-push-3">
+			<form id="cell_send_form" action="/process" method="post" onsubmit="return cell_data_submit()">
+				<input type="hidden" id="sudoku-data" name="sudoku_data" value="">
+				<input type="submit" class="btn btn-success pull-right" value="解く!">
+				<input type="button" onclick="cell_data_submit()">
+			</form>
+		</div>
+	</div>
+</div>

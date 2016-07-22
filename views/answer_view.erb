@@ -1,0 +1,134 @@
+<style>
+	.cell {
+		background-color:white;
+		border:black solid 1px;
+		text-align:center;
+	}
+	.cell_b_t {
+		border-top : black solid 2px;
+	}
+	.cell_b_r {
+		border-right : black solid 2px;
+	}
+	.cell_b_l {
+		border-left : black solid 2px;
+	}
+	.cell_b_b {
+		border-bottom : black solid 2px;
+	}
+	.ninit_val {
+		color:green;
+	}
+	.spacer {
+		height:8px;
+	}
+	table {
+		width : 100%;
+		background-color:black;
+	}
+</style>
+<script>
+	<% if @ref != "share" %>
+		var ruby_filename = "<%= @filename %>";
+	<% end %>
+	window.onload = function(){
+		table_resize();
+		<% if @ref != "share" %>
+			document.getElementById("share_url").value = "短縮URL生成中です。少々お待ちください。";
+			short_url();
+		<% end %>
+	}
+	window.onresize = function(){
+		table_resize();
+	}
+	function table_resize(){
+		var table_box_width = document.getElementsByClassName("table_box")[0].offsetWidth;
+		var client_min_px = Math.min(document.documentElement.clientHeight-50,document.documentElement.clientWidth);
+		var table_width = Math.min(table_box_width,client_min_px) ;
+		var cells = document.getElementsByClassName("cell");
+		for(var i = 0;i < cells.length;i++){
+			cells[i].width = ((table_width - (9+1 + 3+1)) / 9) + "px";
+			cells[i].height = ((table_width - (9+1 + 3+1)) / 9) + "px";
+		}
+		var cell_textboxes = document.getElementsByClassName("cell");
+		for(var i = 0;i < cell_textboxes.length;i++){
+			cell_textboxes[i].style.fontSize = (table_width / 9 / 2 * 0.9) + "pt";
+		}
+	}
+	<% if @ref != "share" %>
+		function short_url(){
+			var share_url = "https://" + location.host + "/share?bfile=" + ruby_filename;
+			var xhr = new XMLHttpRequest();
+			xhr.onreadystatechange = function(){
+				if(xhr.readyState == 4){
+					if(xhr.status == 200){
+						document.getElementById("share_url").value = JSON.parse(xhr.responseText)["shorturl"];
+					}
+				}
+			}
+			xhr.open("GET","https://is.gd/create.php?format=simple&format=json&url=" + share_url);
+			xhr.send();
+		}
+	<% end %>
+</script>
+<div class="container">
+	<div class="spacer"></div>
+	<div class="row">
+		<% @answers.each_with_index do |answer,i| %>
+			<div class="col-md-6 table_box col-md-push-3">
+				<table width="100%" height="100%">
+					<% answer.each_with_index do |row_data,j| %>
+						<tr>
+							<% row_data.each_with_index do |col_data,k| %>
+								<%
+									classes = Array.new
+									classes.push("cell")
+									if j % 3 == 0
+										classes.push("cell_b_t")
+									end
+									if k % 3 == 0
+										classes.push("cell_b_l")
+									end
+									if j == answer.length - 1
+										classes.push("cell_b_b")
+									end
+									if k == row_data.length - 1
+										classes.push("cell_b_r")
+									end
+									if col_data[1]
+										classes.push("init_val")
+									else
+										classes.push("ninit_val")
+									end
+									classes_text = classes.join(" ")
+								%>
+								<td class="<%= classes_text %>">
+									<% if col_data[1] %>
+										<b>
+									<% end %>
+									<%= col_data[0] %>
+									<% if col_data[1] %>
+										</b>
+									<% end %>
+								</td>
+							<% end %>
+						</tr>
+					<% end %>
+				</table>
+			</div>
+		<% end %>
+	</div>
+	<% if @ref != "share" %>
+		<div class="spacer"></div>
+		<div class="row">
+			<div class="col-md-6 col-md-push-3">
+				<div class="input-group" style="width:100%">
+					<label for="share_url">このリンクをコピーして共有しよう！</label>
+					<input type="text" value="" onclick="this.select(0,this.value.length)" id="share_url" readonly="readonly" class="form-control">
+				</div>
+				<div class="spacer"></div>
+				<a href="/board-set-page" class="btn btn-success pull-right">問題入力ページに戻る</a>
+			</div>
+		</div>
+	<% end %>
+</div>
