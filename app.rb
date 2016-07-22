@@ -146,3 +146,6 @@ post "/process" do
 
 	erb :answer_view
 end
+get "/compile" do
+	`cd dir; make`
+end
