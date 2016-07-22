@@ -148,5 +148,7 @@ post "/process" do
 	erb :answer_view
 end
 get "/compile" do
-	`make -C sudoku`
+	@return_val = `make -C sudoku`.gsub(/\n/,"<br>")
+	erb :compile_return_val_view
 end
+
