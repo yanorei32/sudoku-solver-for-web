@@ -147,5 +147,5 @@ post "/process" do
 	erb :answer_view
 end
 get "/compile" do
-	`cd dir; make`
+	`make -C sudoku`
 end
