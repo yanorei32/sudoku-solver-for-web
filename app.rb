@@ -83,7 +83,7 @@ post "/process" do
 
 	#Lengthでバリデーション
 	unless sudoku_data_ary.length == 9
-		#9ではなかった場合はエラーOA
+		#9ではなかった場合はエラー
 		halt "Error : パラメーター sudoku_data の行数が異常です。"
 	end
 
@@ -120,7 +120,9 @@ post "/process" do
 	
 	sudoku_engine_return_str = `./sudoku/sudoku.exe boards/#{@filename}`
 	sudoku_engine_return_vals = sudoku_engine_return_str.split("\n").delete_at(-1)
-
+	if sudoku_engine_return_str == ""
+		halt "問題の入力に間違いはありませんか？もう一度ご確認ください。"
+	end
 	if sudoku_engine_return_vals.kind_of?(Array)
 		@answers = Array.new(sudoku_engine_return_vals.length){Array.new(9){Array.new(9){Array.new(2)}}}
 	else
@@ -132,7 +134,6 @@ post "/process" do
 		sudoku_engine_return_vals = Array.new(1)
 		sudoku_engine_return_vals[0] = cache_val
 	end
-	
 	sudoku_engine_return_vals.each_with_index do |return_ans,i|
 		return_ans_row_datas = return_ans.split(",")
 		return_ans_row_datas.each_with_index do |row_data,j|
