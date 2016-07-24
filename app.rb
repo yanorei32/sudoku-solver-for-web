@@ -1,6 +1,12 @@
 require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
+require 'google_url_shortener'
+
+def shorten_url long_url
+	Google::UrlShortener::Base.api_key = "AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g";
+	Google::UrlShortener::shorten!(long_url)
+end
 
 def sudoku_compile
 	unless File.exists?("./sudoku/sudoku.exe")
@@ -160,16 +166,19 @@ post "/process" do
 end
 get "/short_url" do
 	if params[:filename].nil?
-		halt "ファイル名指定がありません。"
+		halt "Error : ファイルの指定パラメーターがありません。"
 	end
 	if params[:filename] == ""
-		halt "ファイル名指定がありません。"
+		halt "Error : ファイルの指定パラメーターが空です。"
 	end
-	lurl = "https://#{params[:hostname]}/share?bfile=#{params[:filename]}"
-
-	google_api_url = "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g"
-
-	res = HTTPParty.post(google_api_url,:body => {:longUrl => lurl}.to_json,:headers => {"Content-Type" => "application/json"})
-	res.body
+	if params[:hostname].nil?
+		halt "Error : ホスト名指定がありません。"
+	end
+	if params[:hostname] == ""
+		halt "Error : ホスト名指定パラメーターが空です。"
+	end
+	file = params[:filename]
+	host = params[:hostname]
+	shorten_url "https://#{host}/share?bfile=#{file}"
 end
 
