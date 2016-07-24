@@ -2,12 +2,23 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
 
-get "/" do
-	if params[:ar] == "yes"
-		@autoreload = true
-	else
-		@autoreload = false
+def sudoku_compile
+	unless File.exists?("./sudoku/sudoku.exe")
+		`make -C sudoku`
 	end
+end
+
+get "/*" do
+	sudoku_compile
+	pass
+end
+post "/*" do
+	sudoku_compile
+	pass
+end
+
+get "/" do
+	@autoreload = params[:ar] == "yes"
 	erb :index
 end
 
@@ -147,10 +158,6 @@ post "/process" do
 
 	erb :answer_view
 end
-get "/compile" do
-	@return_val = `make -C sudoku`.gsub(/\n/,"<br>")
-	erb :compile_return_val_view
-end
 get "/short_url" do
 	if params[:filename].nil?
 		halt "ファイル名指定がありません。"
@@ -159,19 +166,7 @@ get "/short_url" do
 		halt "ファイル名指定がありません。"
 	end
 	lurl = "https://#{params[:hostname]}/share?bfile=#{params[:filename]}"
-=begin
-	params[:filename]
-	gapiurl = "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g"
-	#res = Net::HTTP.post_form(URI.parse(gapiurl),{"longUrl",lurl}.to_json)
-	uri = URI.parse(gapiurl)
-	http = Net::HTTP.new(uri.host, uri.port)
-	http.use_ssl = true
-	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
-	req = Net::HTTP::Post.new(uri.path)
-	req.set_form_data({"longUrl" => lurl})
-	res = http.request(req)
-	res.body
-=end
+
 	google_api_url = "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g"
 
 	res = HTTPParty.post(google_api_url,:body => {:longUrl => lurl}.to_json,:headers => {"Content-Type" => "application/json"})
