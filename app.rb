@@ -151,4 +151,30 @@ get "/compile" do
 	@return_val = `make -C sudoku`.gsub(/\n/,"<br>")
 	erb :compile_return_val_view
 end
+get "/short_url" do
+	if params[:filename].nil?
+		halt "ファイル名指定がありません。"
+	end
+	if params[:filename] == ""
+		halt "ファイル名指定がありません。"
+	end
+	lurl = "https://#{params[:hostname]}/share?bfile=#{params[:filename]}"
+=begin
+	params[:filename]
+	gapiurl = "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g"
+	#res = Net::HTTP.post_form(URI.parse(gapiurl),{"longUrl",lurl}.to_json)
+	uri = URI.parse(gapiurl)
+	http = Net::HTTP.new(uri.host, uri.port)
+	http.use_ssl = true
+	http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+	req = Net::HTTP::Post.new(uri.path)
+	req.set_form_data({"longUrl" => lurl})
+	res = http.request(req)
+	res.body
+=end
+	google_api_url = "https://www.googleapis.com/urlshortener/v1/url?key=AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g"
+
+	res = HTTPParty.post(google_api_url,:body => {:longUrl => lurl}.to_json,:headers => {"Content-Type" => "application/json"})
+	res.body
+end
 
