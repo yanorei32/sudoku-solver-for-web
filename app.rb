@@ -38,6 +38,9 @@ get "/process" do
 end
 
 get "/share" do
+	unless /\A\d+_\w{32}\.board\Z/.match(params[:bfile])
+		halt "Error : ファイル名が異常です。"
+	end
 	unless File.exist?("./boards/#{params[:bfile]}")
 		halt "Error : そのファイルは存在しません。"
 	end
