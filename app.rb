@@ -70,7 +70,6 @@ get "/share" do
 	@ref = "share"
 	erb :answer_view
 end
-
 post "/process" do
 	t0 = (Time.now.to_i * 1000 * 1000) + Time.now.usec;
 

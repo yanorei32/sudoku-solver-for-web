@@ -57,16 +57,15 @@
 	}
 	<% if @ref != "share" %>
 		function short_url(){
-			var share_url = "https://" + location.host + "/share?bfile=" + ruby_filename;
 			var xhr = new XMLHttpRequest();
 			xhr.onreadystatechange = function(){
 				if(xhr.readyState == 4){
 					if(xhr.status == 200){
-						document.getElementById("share_url").value = JSON.parse(xhr.responseText)["shorturl"];
+						document.getElementById("share_url").value = xhr.responseText;
 					}
 				}
 			}
-			xhr.open("GET","https://is.gd/create.php?format=simple&format=json&url=" + share_url);
+			xhr.open("GET","/short_url?hostname=" + location.host + "&filename=" + ruby_filename);
 			xhr.send();
 		}
 	<% end %>
