@@ -167,6 +167,12 @@ post "/process" do
 	erb :answer_view
 end
 get "/short_url" do
+	unless /\A\d+_\w{32}\.board\Z/.match(params[:filename])
+		halt "Error : ファイル名が異常です。"
+	end
+	unless File.exist?("./boards/#{params[:filename]}")
+		halt "Error : そのファイルは存在しません。"
+	end
 	if params[:filename].nil?
 		halt "Error : ファイルの指定パラメーターがありません。"
 	end
