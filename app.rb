@@ -2,6 +2,8 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
 require 'google_url_shortener'
+require "sinatra/activerecord"
+require "./models.rb"
 
 def shorten_url long_url
 	Google::UrlShortener::Base.api_key = "AIzaSyCyG8yi5WQSrdk6wjw9i_NXSkDXDXIeI0g";
