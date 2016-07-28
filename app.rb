@@ -25,6 +25,15 @@ post "/*" do
 	pass
 end
 
+get "/test2" do
+	board = Board.new(:data => "aa")
+	board.save
+end
+
+get "/test" do
+	logger.info Board.all
+end
+
 get "/" do
 	@autoreload = params[:ar] == "yes"
 	erb :index
