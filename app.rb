@@ -28,10 +28,15 @@ end
 get "/test2" do
 	board = Board.new(:data => "aa")
 	board.save
+	board.update_attribute(:short_url,"/share/#{board.id}")
+end
+
+get "/test/all_delete" do
+	Board.all.delete_all
 end
 
 get "/test" do
-	logger.info Board.all
+	"Board #{Board.last.data} #{Board.last.short_url}"
 end
 
 get "/" do
